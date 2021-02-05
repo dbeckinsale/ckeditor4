@@ -1,10 +1,10 @@
 {
   "name": "@saltcorn/ckeditor4",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "CKEditor4 editor for HTML fields",
   "main": "index.js",
   "dependencies": {
-    "@saltcorn/markup": "^0.3.3"
+    "@saltcorn/markup": "^0.3.0"
   },
   "author": "Tom Nielsen",
   "license": "MIT",

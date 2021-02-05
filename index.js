@@ -30,7 +30,42 @@ const CKEditor4 = {
         },
         text(v || "")
       ),
-      script(domReady(`CKEDITOR.replace( '${text(nm)}' );`))
+      script(
+        domReady(`
+var editor = CKEDITOR.replace( '${text(nm)}', {
+  extraPlugins: 'uploadimage',
+  imageUploadUrl: '/files/upload'
+} );
+
+editor.on( 'fileUploadRequest', function( evt ) {
+  var fileLoader = evt.data.fileLoader,
+      formData = new FormData(),
+      xhr = fileLoader.xhr;
+
+  xhr.open( 'POST', fileLoader.uploadUrl, true );
+  formData.append( 'file', fileLoader.file, fileLoader.fileName );
+  formData.append( 'min_role_read',10 );
+  xhr.setRequestHeader( 'CSRF-Token', _sc_globalCsrf );
+  xhr.setRequestHeader( 'X-Requested-With', 'XMLHttpRequest' );
+  fileLoader.xhr.send( formData );
+
+  // Prevented the default behavior.
+  evt.stop();
+})
+
+editor.on('fileUploadResponse', function( evt ) {
+  evt.stop();
+  var data = evt.data,
+  xhr = data.fileLoader.xhr,
+  response = xhr.responseText;
+  const r = JSON.parse(response);
+  
+  evt.data.uploaded=1;
+  evt.data.fileName=r.success.filename;
+  evt.data.url=r.success.url;
+});
+      `)
+      )
     ),
 };
 
