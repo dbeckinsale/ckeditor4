@@ -17,6 +17,7 @@ const headers = [
 const CKEditor4 = {
   type: "HTML",
   isEdit: true,
+  handlesTextStyle: true,
   run: (nm, v, attrs, cls) =>
     div(
       {
