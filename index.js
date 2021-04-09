@@ -73,6 +73,7 @@ const CKEditor4 = {
 var editor = CKEDITOR.replace( '${text(nm)}', {
   extraPlugins: 'uploadimage',
   imageUploadUrl: '/files/upload',
+  ${attrs.disabled ? `readOnly: true,`:``}
   toolbarGroups: [
     { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
     { name: 'links', groups: [ 'links' ] },
