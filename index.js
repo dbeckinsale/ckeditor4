@@ -14,10 +14,47 @@ const headers = [
   },
 ];
 
+const bigConfig = `function( config ) {
+	config.toolbarGroups = [
+		{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+		{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+		{ name: 'links', groups: [ 'links' ] },
+		{ name: 'insert', groups: [ 'insert' ] },
+		{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+		{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+		{ name: 'styles', groups: [ 'styles' ] },
+		{ name: 'colors', groups: [ 'colors' ] },
+		{ name: 'others', groups: [ 'others' ] },
+	];
+
+	config.removeButtons = 'Find,Replace,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Flash,Iframe,BidiLtr,BidiRtl,Language,CreateDiv,Font';
+}`;
+
+const smallConfig = `function( config ) {
+  config.toolbarGroups = [
+		{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+		{ name: 'links', groups: [ 'links' ] },
+		{ name: 'insert', groups: [ 'insert' ] },
+		{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+		{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+		{ name: 'styles', groups: [ 'styles' ] },
+		{ name: 'colors', groups: [ 'colors' ] },
+		{ name: 'others', groups: [ 'others' ] },
+	];
+
+	config.removeButtons = 'Find,Replace,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Flash,Iframe,BidiLtr,BidiRtl,Language,CreateDiv,Font';
+}`;
 const CKEditor4 = {
   type: "HTML",
   isEdit: true,
   handlesTextStyle: true,
+  configFields: [
+    {
+      name: "reduced",
+      label: "Reduced toolbar",
+      type: "Bool",
+    },
+  ],
   run: (nm, v, attrs, cls) =>
     div(
       {
@@ -35,7 +72,24 @@ const CKEditor4 = {
         domReady(`
 var editor = CKEDITOR.replace( '${text(nm)}', {
   extraPlugins: 'uploadimage',
-  imageUploadUrl: '/files/upload'
+  imageUploadUrl: '/files/upload',
+  toolbarGroups: [
+    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+    { name: 'links', groups: [ 'links' ] },
+
+    ${
+      attrs.reduced
+        ? ""
+        : `{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+    { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },`
+    }
+		
+		{ name: 'insert', groups: [ 'insert' ] },
+		{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+		${attrs.reduced ? "" : `{ name: 'styles', groups: [ 'styles' ] },`}
+		{ name: 'colors', groups: [ 'colors' ] },
+		{ name: 'others', groups: [ 'others' ] },
+	]
 } );
 
 editor.on( 'fileUploadRequest', function( evt ) {
