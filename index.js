@@ -14,36 +14,6 @@ const headers = [
   },
 ];
 
-const bigConfig = `function( config ) {
-	config.toolbarGroups = [
-		{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-		{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
-		{ name: 'links', groups: [ 'links' ] },
-		{ name: 'insert', groups: [ 'insert' ] },
-		{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-		{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
-		{ name: 'styles', groups: [ 'styles' ] },
-		{ name: 'colors', groups: [ 'colors' ] },
-		{ name: 'others', groups: [ 'others' ] },
-	];
-
-	config.removeButtons = 'Find,Replace,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Flash,Iframe,BidiLtr,BidiRtl,Language,CreateDiv,Font';
-}`;
-
-const smallConfig = `function( config ) {
-  config.toolbarGroups = [
-		{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
-		{ name: 'links', groups: [ 'links' ] },
-		{ name: 'insert', groups: [ 'insert' ] },
-		{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-		{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
-		{ name: 'styles', groups: [ 'styles' ] },
-		{ name: 'colors', groups: [ 'colors' ] },
-		{ name: 'others', groups: [ 'others' ] },
-	];
-
-	config.removeButtons = 'Find,Replace,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Flash,Iframe,BidiLtr,BidiRtl,Language,CreateDiv,Font';
-}`;
 const CKEditor4 = {
   type: "HTML",
   isEdit: true,
@@ -53,6 +23,12 @@ const CKEditor4 = {
       name: "reduced",
       label: "Reduced toolbar",
       type: "Bool",
+    },
+    {
+      name: "height",
+      label: "Height (em units)",
+      type: "Integer",
+      default: 10,
     },
   ],
   run: (nm, v, attrs, cls) =>
@@ -73,7 +49,8 @@ const CKEditor4 = {
 var editor = CKEDITOR.replace( '${text(nm)}', {
   extraPlugins: 'uploadimage',
   imageUploadUrl: '/files/upload',
-  ${attrs.disabled ? `readOnly: true,`:``}
+  ${attrs.disabled ? `readOnly: true,` : ``}
+  height: "${attrs.height || 10}em",
   toolbarGroups: [
     { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
     { name: 'links', groups: [ 'links' ] },
