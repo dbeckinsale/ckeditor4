@@ -10,7 +10,7 @@ const {
 
 const headers = [
   {
-    script: "https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js",
+    script: "/plugins/public/ckeditor4/ckeditor.js",
   },
 ];
 
