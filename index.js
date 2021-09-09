@@ -10,7 +10,7 @@ const {
 
 const headers = [
   {
-    script: "ckeditor.js",
+    script: "/plugins/public/ckeditor4/ckeditor.js",
   },
 ];
 
