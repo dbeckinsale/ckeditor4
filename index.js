@@ -107,6 +107,7 @@ const dependencies = ["@saltcorn/html"];
 module.exports = {
   sc_plugin_api_version: 1,
   fieldviews: { CKEditor4 },
+  plugin_name: "ckeditor4",
   headers,
   dependencies,
 };
