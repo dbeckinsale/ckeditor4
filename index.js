@@ -7,12 +7,19 @@ const {
   textarea,
   style,
 } = require("@saltcorn/markup/tags");
-
-const headers = [
-  {
-    script: "/plugins/public/ckeditor4/ckeditor.js",
-  },
-];
+const { features } = require("@saltcorn/data/db/state");
+const headers =
+  features && features.deep_public_plugin_serve
+    ? [
+        {
+          script: "/plugins/public/ckeditor4/ckeditor.js",
+        },
+      ]
+    : [
+        {
+          script: "https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js",
+        },
+      ];
 
 const CKEditor4 = {
   type: "HTML",
