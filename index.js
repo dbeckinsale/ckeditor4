@@ -24,12 +24,15 @@ const headers =
 const CKEditor4 = {
   type: "HTML",
   isEdit: true,
+  blockDisplay: true,
   handlesTextStyle: true,
   configFields: [
     {
-      name: "reduced",
-      label: "Reduced toolbar",
-      type: "Bool",
+      name: "toolbar",
+      label: "Toolbar",
+      required: true,
+      type: "String",
+      attributes: { options: ["Standard", "Reduced", "Document"] },
     },
     {
       name: "height",
@@ -38,8 +41,83 @@ const CKEditor4 = {
       default: 10,
     },
   ],
-  run: (nm, v, attrs, cls) =>
-    div(
+  run: (nm, v, attrs, cls) => {
+    const toolbarGroups =
+      attrs.reduced || attrs.toolbar === "Reduced"
+        ? [
+            { name: "basicstyles", groups: ["basicstyles", "cleanup"] },
+            { name: "links", groups: ["links"] },
+
+            { name: "insert", groups: ["insert"] },
+            {
+              name: "paragraph",
+              groups: [
+                "list",
+                "indent",
+                "blocks",
+                "align",
+                "bidi",
+                "paragraph",
+              ],
+            },
+
+            { name: "colors", groups: ["colors"] },
+            { name: "others", groups: ["others"] },
+          ]
+        : attrs.toolbar === "Document"
+        ? [
+            { name: "basicstyles", groups: ["basicstyles", "cleanup"] },
+            { name: "links", groups: ["links"] },
+
+            { name: "clipboard", groups: ["clipboard", "undo"] },
+            {
+              name: "editing",
+              groups: ["find", "selection", "spellchecker", "editing"],
+            },
+
+            { name: "insert", groups: ["insert"] },
+            {
+              name: "paragraph",
+              groups: [
+                "list",
+                "indent",
+                "blocks",
+                "align",
+                "bidi",
+                "paragraph",
+              ],
+            },
+            { name: "styles", groups: ["styles"] },
+            { name: "colors", groups: ["colors"] },
+            { name: "others", groups: ["others"] },
+          ]
+        : [
+            { name: "basicstyles", groups: ["basicstyles", "cleanup"] },
+            { name: "links", groups: ["links"] },
+
+            { name: "clipboard", groups: ["clipboard", "undo"] },
+            {
+              name: "editing",
+              groups: ["find", "selection", "spellchecker", "editing"],
+            },
+
+            { name: "insert", groups: ["insert"] },
+            {
+              name: "paragraph",
+              groups: [
+                "list",
+                "indent",
+                "blocks",
+                "align",
+                "bidi",
+                "paragraph",
+              ],
+            },
+            { name: "styles", groups: ["styles"] },
+            { name: "colors", groups: ["colors"] },
+            { name: "others", groups: ["others"] },
+          ];
+    return div(
       {
         class: [cls],
       },
@@ -58,23 +136,7 @@ var editor = CKEDITOR.replace( '${text(nm)}', {
   imageUploadUrl: '/files/upload',
   ${attrs.disabled ? `readOnly: true,` : ``}
   height: "${attrs.height || 10}em",
-  toolbarGroups: [
-    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-    { name: 'links', groups: [ 'links' ] },
-
-    ${
-      attrs.reduced
-        ? ""
-        : `{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-    { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },`
-    }
-		
-		{ name: 'insert', groups: [ 'insert' ] },
-		{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
-		${attrs.reduced ? "" : `{ name: 'styles', groups: [ 'styles' ] },`}
-		{ name: 'colors', groups: [ 'colors' ] },
-		{ name: 'others', groups: [ 'others' ] },
-	]
+  toolbarGroups: ${JSON.stringify(toolbarGroups)}
 } );
 
 editor.on( 'fileUploadRequest', function( evt ) {
@@ -106,7 +168,8 @@ editor.on('fileUploadResponse', function( evt ) {
 });
       `)
       )
-    ),
+    );
+  },
 };
 
 const dependencies = ["@saltcorn/html"];
