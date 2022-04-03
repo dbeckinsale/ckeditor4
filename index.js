@@ -113,6 +113,7 @@ const CKEditor4 = {
                 "paragraph",
               ],
             },
+            { name: "justify", groups: ["justify"] },
             { name: "styles", groups: ["styles"] },
             { name: "font", groups: ["font"] },
             { name: "colors", groups: ["colors"] },
@@ -122,7 +123,7 @@ const CKEditor4 = {
       attrs.reduced || attrs.toolbar === "Reduced"
         ? "uploadimage"
         : attrs.toolbar === "Document"
-        ? "uploadimage,colorbutton,font"
+        ? "uploadimage,colorbutton,font,justify"
         : "uploadimage";
     return div(
       {
