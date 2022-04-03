@@ -114,6 +114,7 @@ const CKEditor4 = {
               ],
             },
             { name: "styles", groups: ["styles"] },
+            { name: "font", groups: ["font"] },
             { name: "colors", groups: ["colors"] },
             { name: "others", groups: ["others"] },
           ];
@@ -121,7 +122,7 @@ const CKEditor4 = {
       attrs.reduced || attrs.toolbar === "Reduced"
         ? "uploadimage"
         : attrs.toolbar === "Document"
-        ? "uploadimage,colorbutton"
+        ? "uploadimage,colorbutton,font"
         : "uploadimage";
     return div(
       {
