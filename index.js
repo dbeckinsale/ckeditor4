@@ -117,6 +117,12 @@ const CKEditor4 = {
             { name: "colors", groups: ["colors"] },
             { name: "others", groups: ["others"] },
           ];
+    const extraPlugins =
+      attrs.reduced || attrs.toolbar === "Reduced"
+        ? "uploadimage"
+        : attrs.toolbar === "Document"
+        ? "uploadimage,colorbutton"
+        : "uploadimage";
     return div(
       {
         class: [cls],
@@ -132,7 +138,7 @@ const CKEditor4 = {
       script(
         domReady(`
 var editor = CKEDITOR.replace( '${text(nm)}', {
-  extraPlugins: 'uploadimage',
+  extraPlugins: ${JSON.stringify(extraPlugins)},
   imageUploadUrl: '/files/upload',
   ${attrs.disabled ? `readOnly: true,` : ``}
   height: "${attrs.height || 10}em",
