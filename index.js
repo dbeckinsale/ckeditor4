@@ -67,7 +67,6 @@ const CKEditor4 = {
         : attrs.toolbar === "Document"
         ? [
             { name: "basicstyles", groups: ["basicstyles", "cleanup"] },
-            { name: "links", groups: ["links"] },
 
             { name: "clipboard", groups: ["clipboard", "undo"] },
             {
