@@ -143,7 +143,9 @@ var editor = CKEDITOR.replace( '${text(nm)}', {
   imageUploadUrl: '/files/upload',
   ${attrs.disabled ? `readOnly: true,` : ``}
   height: "${attrs.height || 10}em",
-  toolbarGroups: ${JSON.stringify(toolbarGroups)}
+  toolbarGroups: ${JSON.stringify(toolbarGroups)},
+  removeButtons: 'Subscript,Superscript'
+
 } );
 
 editor.on( 'fileUploadRequest', function( evt ) {
