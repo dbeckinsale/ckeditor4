@@ -120,10 +120,10 @@ const CKEditor4 = {
           ];
     const extraPlugins =
       attrs.reduced || attrs.toolbar === "Reduced"
-        ? "uploadimage"
+        ? "uploadimage,dialogadvtab"
         : attrs.toolbar === "Document"
-        ? "uploadimage,colorbutton,font,justify"
-        : "uploadimage";
+        ? "uploadimage,colorbutton,font,justify,dialogadvtab"
+        : "uploadimage,dialogadvtab";
     return div(
       {
         class: [cls],
@@ -147,7 +147,15 @@ var editor = CKEDITOR.replace( '${text(nm)}', {
   removeButtons: 'Subscript,Superscript'
 
 } );
+CKEDITOR.on('dialogDefinition', function (ev) {
+  var dialogName = ev.data.name;
+  var dialogDefinition = ev.data.definition;
 
+  if (dialogName === 'table') {
+    var addCssClass = dialogDefinition.getContents('advanced').get('advCSSClasses');
+    addCssClass['default'] = 'table-grid';
+  }
+});
 editor.on( 'fileUploadRequest', function( evt ) {
   var fileLoader = evt.data.fileLoader,
       formData = new FormData(),
