@@ -144,8 +144,9 @@ var editor = CKEDITOR.replace( '${text(nm)}', {
   ${attrs.disabled ? `readOnly: true,` : ``}
   height: "${attrs.height || 10}em",
   toolbarGroups: ${JSON.stringify(toolbarGroups)},
-  removeButtons: 'Subscript,Superscript'
-
+  removeButtons: 'Subscript,Superscript',
+  disallowedContent: 'img{width,height}',
+  extraAllowedContent: 'img[width,height]'
 } );
 CKEDITOR.on('dialogDefinition', function (ev) {
   var dialogName = ev.data.name;
