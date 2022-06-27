@@ -153,7 +153,7 @@ CKEDITOR.on('dialogDefinition', function (ev) {
 
   if (dialogName === 'table') {
     var addCssClass = dialogDefinition.getContents('advanced').get('advCSSClasses');
-    addCssClass['default'] = 'table-grid';
+    addCssClass['default'] = 'table-inner-grid';
   }
 });
 editor.on( 'fileUploadRequest', function( evt ) {
