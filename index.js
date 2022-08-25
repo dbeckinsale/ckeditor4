@@ -157,6 +157,7 @@ CKEDITOR.on('dialogDefinition', function (ev) {
     addCssClass['default'] = 'table-inner-grid';
   }
 });
+
 editor.on( 'fileUploadRequest', function( evt ) {
   var fileLoader = evt.data.fileLoader,
       formData = new FormData(),
@@ -172,7 +173,7 @@ editor.on( 'fileUploadRequest', function( evt ) {
   // Prevented the default behavior.
   evt.stop();
 })
-
+editor.on('change', (e)=>{editor.updateElement() } );
 editor.on('fileUploadResponse', function( evt ) {
   evt.stop();
   var data = evt.data,
