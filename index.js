@@ -11,15 +11,15 @@ const { features } = require("@saltcorn/data/db/state");
 const headers =
   features && features.deep_public_plugin_serve
     ? [
-        {
-          script: "/plugins/public/ckeditor4/ckeditor.js",
-        },
-      ]
+      {
+        script: "/plugins/public/ckeditor4/ckeditor.js",
+      },
+    ]
     : [
-        {
-          script: "https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js",
-        },
-      ];
+      {
+        script: "https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js",
+      },
+    ];
 
 const CKEditor4 = {
   type: "HTML",
@@ -45,27 +45,27 @@ const CKEditor4 = {
     const toolbarGroups =
       attrs.reduced || attrs.toolbar === "Reduced"
         ? [
-            { name: "basicstyles", groups: ["basicstyles", "cleanup"] },
-            { name: "links", groups: ["links"] },
+          { name: "basicstyles", groups: ["basicstyles", "cleanup"] },
+          { name: "links", groups: ["links"] },
 
-            { name: "insert", groups: ["insert"] },
-            {
-              name: "paragraph",
-              groups: [
-                "list",
-                "indent",
-                "blocks",
-                "align",
-                "bidi",
-                "paragraph",
-              ],
-            },
+          { name: "insert", groups: ["insert"] },
+          {
+            name: "paragraph",
+            groups: [
+              "list",
+              "indent",
+              "blocks",
+              "align",
+              "bidi",
+              "paragraph",
+            ],
+          },
 
-            { name: "colors", groups: ["colors"] },
-            { name: "others", groups: ["others"] },
-          ]
+          { name: "colors", groups: ["colors"] },
+          { name: "others", groups: ["others"] },
+        ]
         : attrs.toolbar === "Document"
-        ? [
+          ? [
             { name: "basicstyles", groups: ["basicstyles", "cleanup"] },
 
             { name: "clipboard", groups: ["clipboard", "undo"] },
@@ -90,7 +90,7 @@ const CKEditor4 = {
             { name: "colors", groups: ["colors"] },
             { name: "others", groups: ["others"] },
           ]
-        : [
+          : [
             { name: "basicstyles", groups: ["basicstyles", "cleanup"] },
             { name: "links", groups: ["links"] },
 
@@ -122,8 +122,8 @@ const CKEditor4 = {
       attrs.reduced || attrs.toolbar === "Reduced"
         ? "uploadimage,dialogadvtab"
         : attrs.toolbar === "Document"
-        ? "uploadimage,colorbutton,font,justify,dialogadvtab"
-        : "uploadimage,dialogadvtab";
+          ? "uploadimage,colorbutton,font,justify,dialogadvtab"
+          : "uploadimage,dialogadvtab";
     return div(
       {
         class: [cls],
@@ -173,7 +173,11 @@ editor.on( 'fileUploadRequest', function( evt ) {
   // Prevented the default behavior.
   evt.stop();
 })
-editor.on('change', (e)=>{editor.updateElement() } );
+let ckOnChange = ()=>{
+  editor.updateElement();
+  $('textarea#input${text(nm)}').closest('form').trigger('change');
+}
+editor.on('change', $.debounce ? $.debounce(ckOnChange, 500, null,true) : ckOnChange);
 editor.on('fileUploadResponse', function( evt ) {
   evt.stop();
   var data = evt.data,
