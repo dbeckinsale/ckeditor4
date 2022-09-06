@@ -9,10 +9,13 @@ const {
 } = require("@saltcorn/markup/tags");
 const { features } = require("@saltcorn/data/db/state");
 const headers =
-  features && features.deep_public_plugin_serve
+  features?.deep_public_plugin_serve
     ? [
       {
-        script: "/plugins/public/ckeditor4/ckeditor.js",
+        script: `/plugins/public/ckeditor4${features?.version_plugin_serve_path
+          ? "@" + require("./package.json").version
+          : ""
+          }/ckeditor.js`,
       },
     ]
     : [
