@@ -8,6 +8,7 @@ const {
   style,
 } = require("@saltcorn/markup/tags");
 const { features } = require("@saltcorn/data/db/state");
+const File = require("@saltcorn/data/models/file");
 const headers =
   features?.deep_public_plugin_serve
     ? [
@@ -29,21 +30,32 @@ const CKEditor4 = {
   isEdit: true,
   blockDisplay: true,
   handlesTextStyle: true,
-  configFields: [
-    {
-      name: "toolbar",
-      label: "Toolbar",
-      required: true,
-      type: "String",
-      attributes: { options: ["Standard", "Reduced", "Document"] },
-    },
-    {
-      name: "height",
-      label: "Height (em units)",
-      type: "Integer",
-      default: 10,
-    },
-  ],
+  configFields: async () => {
+    const dirs = File.allDirectories ? await File.allDirectories() : null
+    return [
+      {
+        name: "toolbar",
+        label: "Toolbar",
+        required: true,
+        type: "String",
+        attributes: { options: ["Standard", "Reduced", "Document"] },
+      },
+      {
+        name: "height",
+        label: "Height (em units)",
+        type: "Integer",
+        default: 10,
+      },
+      ...dirs ? [
+        {
+          name: "folder",
+          label: "Folder",
+          type: "String",
+          attributes: { options: dirs.map(d => d.path_to_serve) }
+        }
+      ] : []
+    ]
+  },
   run: (nm, v, attrs, cls) => {
     const toolbarGroups =
       attrs.reduced || attrs.toolbar === "Reduced"
@@ -169,6 +181,7 @@ editor.on( 'fileUploadRequest', function( evt ) {
   xhr.open( 'POST', fileLoader.uploadUrl, true );
   formData.append( 'file', fileLoader.file, fileLoader.fileName );
   formData.append( 'min_role_read',10 );
+  ${attrs.folder ? `formData.append( 'folder', ${JSON.stringify(attrs.folder)} );` : ''}
   xhr.setRequestHeader( 'CSRF-Token', _sc_globalCsrf );
   xhr.setRequestHeader( 'X-Requested-With', 'XMLHttpRequest' );
   fileLoader.xhr.send( formData );
