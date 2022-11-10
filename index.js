@@ -137,7 +137,7 @@ const CKEditor4 = {
       attrs.reduced || attrs.toolbar === "Reduced"
         ? "uploadimage,dialogadvtab"
         : attrs.toolbar === "Document"
-          ? "uploadimage,colorbutton,font,justify,dialogadvtab"
+          ? "uploadimage,colorbutton,font,justify,dialogadvtab,colordialog"
           : "uploadimage,dialogadvtab";
     return div(
       {
@@ -159,7 +159,7 @@ var editor = CKEDITOR.replace( '${text(nm)}', {
   ${attrs.disabled ? `readOnly: true,` : ``}
   height: "${attrs.height || 10}em",
   toolbarGroups: ${JSON.stringify(toolbarGroups)},
-  removeButtons: 'Subscript,Superscript',
+  ${attrs.toolbar === "Document" ? `removeButtons: '',` : `removeButtons: 'Subscript,Superscript',`}
   disallowedContent: 'img{width,height}',
   extraAllowedContent: 'img[width,height]'
 } );
